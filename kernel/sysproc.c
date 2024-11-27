@@ -95,3 +95,15 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+//sys_trace,将参数保存到proc结构体的trace_mask中实现新的调用
+uint64
+sys_trace(void)
+{
+  uint mask;
+  if(argint(0, (int*)&mask) < 0)
+    return -1;
+  struct proc *p = myproc();
+  p->syscall_trace |= mask;
+  return 0;
+}
+
